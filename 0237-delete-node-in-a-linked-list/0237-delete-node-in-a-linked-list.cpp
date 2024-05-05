@@ -14,3 +14,4 @@ public:
 
     }
 };
+/* In this code we have given a particular note and we have to remove it so we just inserted the value of next node and move the next pointer to next to next*/
