@@ -21,8 +21,10 @@ public:
                 for(int i = 0; i<4; i++){
                     int nx = x+dx[i], ny = y+dy[i];
                     if(nx<0 || ny<0 || nx>=n || ny>=m || grid[nx][ny] != 1) continue;
-                    if(grid[nx][ny] != 2) grid[nx][ny] = 2;
-                    q.push({nx,ny});
+                    if(grid[nx][ny] != 2){
+                        grid[nx][ny] = 2;
+                        q.push({nx,ny});
+                    } 
                 }
             }
             if(!q.empty()) ans++;
