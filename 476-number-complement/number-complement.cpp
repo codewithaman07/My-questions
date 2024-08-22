@@ -6,7 +6,7 @@ public:
             int temp = num&1;
             if(!temp) ans+=(1<<i);
             i++;
-            num = num>>1;
+            num>>=1;
         }
         return ans;
     }
