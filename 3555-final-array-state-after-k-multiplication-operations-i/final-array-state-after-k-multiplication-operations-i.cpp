@@ -2,9 +2,14 @@ class Solution {
 public:
     vector<int> getFinalState(vector<int>& nums, int k, int mul) {
         int n = nums.size();
-        for(int i = 0; i<k; i++){
-            int idx = min_element(nums.begin(), nums.end())-nums.begin();
-            nums[idx]*=mul;
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>>pq;
+        for(int i = 0; i<n; i++) pq.push({nums[i],i});
+        while(k--){
+            pair<int,int>p = pq.top();
+            pq.pop();
+            int val = p.first, idx = p.second;
+            nums[idx] = val*mul;
+            pq.push({val*mul,idx});
         }
         return nums;
     }
