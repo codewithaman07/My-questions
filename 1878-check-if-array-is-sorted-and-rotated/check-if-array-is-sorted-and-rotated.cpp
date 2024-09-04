@@ -5,6 +5,7 @@ public:
         for(int i = 0; i<n; i++){
             if(arr[i]>arr[(i+1)%n]) cnt++;
         }
-        return cnt<=1 ? 1 : 0;
+        return cnt<=1 ? 
+        1 : 0;
     }
 };
