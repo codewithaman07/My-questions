@@ -21,20 +21,22 @@ public:
         temp = head;
         int x = n/k;
         int r = n%k;
+        ListNode* prev = temp;
         for(int i = 0; i<k; i++){
-            ListNode dummy;
-            ListNode* tail = &dummy;
+            ListNode* random = temp;
             int size = x;
             if(r>0){
                 r--;
                 size++;
             }
-            for(int j = 0; j<size; j++){
-                tail->next = new ListNode(temp->val);
-                tail = tail->next;
-                temp = temp->next;
+            int j = 0;
+            while(j<size){
+                prev = temp;
+                if(temp) temp = temp->next;
+                j++;
             }
-            arr[i] = dummy.next;
+            if(prev) prev->next = nullptr;
+            arr[i] = random;
         }
         return arr;
     }
