@@ -1,6 +1,7 @@
 class Solution {
 public:
     double pow(double x, int n){
+        cout<<n<<endl;
         if(n == 0) return 1;
         double temp = pow(x,n/2);
         if(n&1) return temp*temp*x;
