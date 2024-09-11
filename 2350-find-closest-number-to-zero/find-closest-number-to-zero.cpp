@@ -6,7 +6,7 @@ public:
         int pos = -1;
         sort(nums.begin(), nums.end());
         for(int i = 0; i<n; i++){
-            if(abs(nums[i]) <= mini && nums[i]<=mini){
+            if(abs(nums[i]) <= mini){
                 pos = i;
                 mini = abs(nums[i]);
             }
