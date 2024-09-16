@@ -3,10 +3,9 @@ public:
     vector<vector<int>> construct2DArray(vector<int>& arr, int n, int m) {
         int x = arr.size();
         if(x!=n*m) return {};
-        vector<vector<int>>ans;
-        for(int i = 0; i<n*m; i+=m){
-            vector<int>temp(arr.begin()+i, arr.begin()+i+m);
-            ans.push_back(temp);
+        vector<vector<int>>ans(n,vector<int>(m));
+        for(int i = 0; i<x; i++){
+            ans[i/m][i%m] = arr[i];
         }
         return ans;
     }
