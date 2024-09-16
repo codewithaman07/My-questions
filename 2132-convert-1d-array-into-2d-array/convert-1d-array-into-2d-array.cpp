@@ -5,10 +5,7 @@ public:
         if(x!=n*m) return {};
         vector<vector<int>>ans;
         for(int i = 0; i<n*m; i+=m){
-            vector<int>temp;
-            for(int j = i; j<i+m; j++){
-                temp.push_back(arr[j]);
-            }
+            vector<int>temp(arr.begin()+i, arr.begin()+i+m);
             ans.push_back(temp);
         }
         return ans;
