@@ -1,16 +1,32 @@
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        int n = arr.size();
-        int l = 0, r = n-1;
-        while(r-l>=k){
-            if(abs(arr[l]-x) <= abs(arr[r]-x)) r--;
-            else l++;
+        int n = arr.size(), l = 0, r = n-k;
+        while(l<r){
+            int m = l+(r-l)/2;
+            if(x-arr[m] > arr[m+k]-x){
+                l = m+1;
+            }
+            else r = m;
         }
         vector<int>ans(arr.begin()+l, arr.begin()+l+k);
         return ans;
     }
 };
+
+// class Solution {
+// public:
+//     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+//         int n = arr.size();
+//         int l = 0, r = n-1;
+//         while(r-l>=k){
+//             if(abs(arr[l]-x) <= abs(arr[r]-x)) r--;
+//             else l++;
+//         }
+//         vector<int>ans(arr.begin()+l, arr.begin()+l+k);
+//         return ans;
+//     }
+// }; TC O(n)
 
 // class Solution {
 // public:
