@@ -1,20 +1,23 @@
 class Solution {
 public:
-    int coinChange(vector<int>& arr, int t) {
-        int n = arr.size();
-        vector<vector<int>>dp(n, vector<int>(t+1,0));
-        for(int i = 0; i<=t; i++){
-            if(i%arr[0] == 0) dp[0][i] = i/arr[0];
-            else dp[0][i] = 1e9;
+    int solve(int i, int j, vector<int>&nums, vector<vector<int>>&dp){
+        if(j == 0) return 0;
+        if(i<0) return INT_MAX-1;
+        if(i == 0){
+            if(j%nums[i] == 0) dp[i][j] = j/nums[i];
         }
-        for(int i = 1; i<n; i++){
-            for(int j = 0; j<=t; j++){
-                int np = dp[i-1][j];
-                int p = 1e9;
-                if(arr[i]<=j) p = 1+dp[i][j-arr[i]];
-                dp[i][j] = min(p,np);
-            }
+        if(dp[i][j] != -1) return dp[i][j];
+        int np = solve(i-1, j, nums,dp);
+        int p = INT_MAX-1;
+        if(nums[i]<=j){
+            p = solve(i, j-nums[i], nums, dp)+1;
         }
-        return dp[n-1][t] != 1e9 ? dp[n-1][t] : -1;  
+        return dp[i][j] = min(p,np);
+    }
+    int coinChange(vector<int>& nums, int t) {
+        int n = nums.size();
+        vector<vector<int>>dp(n+1, vector<int>(t+1, -1));
+        int ans = solve(n-1,t,nums,dp);
+        return ans == INT_MAX-1 ? -1 : ans;
     }
 };
