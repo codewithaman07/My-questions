@@ -1,27 +1,38 @@
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
-        int k = 2, l = 0, r = 0, n = fruits.size(), len = 0, maxi = 0;
-        map<int,int>mp;
+        int n = fruits.size();
+        unordered_map<int,int>mp;
+        int l = 0, r = 0, ans = 0;
         while(r<n){
             mp[fruits[r]]++;
-            if(mp.size()>k){
+            while(mp.size()>2){
                 mp[fruits[l]]--;
                 if(mp[fruits[l]] == 0) mp.erase(fruits[l]);
                 l++;
             }
-            if(mp.size()<=k){
-                len = r-l+1;
-                maxi = max(maxi,len);
-            }
+            ans = max(ans, r-l+1);
             r++;
         }
-        return maxi;
+        return ans;
     }
 };
-auto init = []() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    return 'c';
-}();
+
+// class Solution {
+// public:
+//     int totalFruit(vector<int>& fruits) {
+//         int n = fruits.size();
+//         int ans = INT_MIN;
+//         for(int i = 0; i<n; i++){
+//             unordered_set<int>st;
+//             int cnt = 0;
+//             for(int j = i; j<n; j++){
+//                 st.insert(fruits[j]);
+//                 if(st.size()>2) break;
+//                 cnt++;
+//             }
+//             ans = max(ans,cnt);
+//         }
+//         return ans;
+//     }
+// };
