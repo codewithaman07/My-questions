@@ -3,7 +3,7 @@ public:
     bool solve(int i, int j, vector<int>&nums, vector<vector<int>>&dp){
         if(j == 0) return 1;
         if(i<0) return 0;
-        // if(i == 0 && j == nums[0]) return 1;
+        if(i == 0 && j == nums[0]) return 1;
         if(dp[i][j] != -1) return dp[i][j];
         bool np = solve(i-1, j, nums, dp);
         bool p = 0;
