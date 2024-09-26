@@ -1,22 +1,18 @@
 class MyCalendar {
 public:
-    vector<pair<int,int>>arr;
+    set<pair<int,int>>st;
     MyCalendar() {
         
     }
     
     bool book(int start, int end) {
-        int n = arr.size();
-        if(n == 0){
-            arr.push_back({start,end});
-            return 1;
+        auto it = st.lower_bound({start,end});
+        if(it != st.end() && it->first < end) return 0;
+        if(it != st.begin()){
+            auto prevIt = prev(it);
+            if(prevIt->second > start) return 0;
         }
-        for(auto p : arr){
-            int prevStart = p.first;
-            int prevEnd = p.second;
-            if(prevStart<end && start<prevEnd) return 0;
-        }
-        arr.push_back({start,end});
+        st.insert({start,end});
         return 1;
     }
 };
