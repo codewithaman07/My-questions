@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool reportSpam(vector<string>& message, vector<string>& bannedWords) {
-        unordered_set<string>st;
+        unordered_map<string,int>mp;
         for(auto i : bannedWords){
-            st.insert(i);
+            mp[i]++;
         }
         int cnt = 0;
         for(auto i : message){
-            if(st.count(i)) cnt++;
+            if(mp.count(i)) cnt++;
             if(cnt>=2) return 1;
         }
         return 0;
