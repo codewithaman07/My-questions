@@ -1,13 +1,13 @@
 class Solution {
 public:
     bool canArrange(vector<int>& arr, int k) {
-        vector<int>cnt(k,0);
         int n = arr.size();
+        vector<int>cnt(k,0);
         for(int i = 0; i<n; i++){
             int rem = ((arr[i]%k)+k)%k;
             cnt[rem]++;
         }
-        if(cnt[0]&1) return 0;
+        if(cnt[0] & 1) return 0;
         for(int i = 1; i<=k/2; i++){
             if(cnt[i] != cnt[k-i]) return 0;
         }
