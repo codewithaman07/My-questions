@@ -4,7 +4,7 @@ public:
         int n = times.size();
         auto x = times[targetFriend];
         sort(times.begin(), times.end());
-        vector<int>arr(n);
+        vector<int>arr(n,0);
         for(auto it : times){
             for(int i = 0; i<n; i++){
                 if(arr[i]<=it[0]){
