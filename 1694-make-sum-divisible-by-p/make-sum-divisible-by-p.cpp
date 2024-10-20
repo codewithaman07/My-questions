@@ -12,7 +12,7 @@ public:
             sum = (sum+nums[i])%p;
             int rem = sum%p;
             if(rem < 0) rem+=p;
-            int req = (rem-total)%p;
+            int req = (rem-total+p)%p;
             if(req<0) req+=p;
             if(mp.find(req) != mp.end()){
                 mini = min(mini, i-mp[req]);
