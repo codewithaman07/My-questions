@@ -3,7 +3,7 @@ public:
     bool fun(vector<int>&nums, int maxOperations, int mid, int n){
         int cnt = 0;
         for(int i = 0; i<n; i++){ // ceil (a+b-1)/b
-            cnt+= ((nums[i]+mid-1)/mid)-1;
+            cnt+= ((nums[i]+mid-1)/mid)-1; // one bag was already their 
         }
         return cnt <= maxOperations;
     }
