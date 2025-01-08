@@ -12,8 +12,6 @@ public:
                         f1 = 0; 
                         break;
                     }
-                }
-                for(int k = 0; k<m; k++){
                     if(temp[m-1-k] != words[j][words[j].size()-1-k]){
                         f2 = 0;
                         break;
