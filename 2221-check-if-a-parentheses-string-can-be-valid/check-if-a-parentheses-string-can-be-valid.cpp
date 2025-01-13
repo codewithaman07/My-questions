@@ -1,37 +1,23 @@
 class Solution {
 public:
     bool canBeValid(string s, string locked) {
-        int length = s.size();
-        if (length % 2 == 1) {
-            return false;
-        }
-
-        stack<int> openBrackets, unlocked;
-        for (int i = 0; i < length; i++) {
-            if (locked[i] == '0') {
-                unlocked.push(i);
-            } else if (s[i] == '(') {
-                openBrackets.push(i);
-            } else if (s[i] == ')') {
-                if (!openBrackets.empty()) {
-                    openBrackets.pop();
-                } else if (!unlocked.empty()) {
-                    unlocked.pop();
-                } else {
-                    return false;
-                }
+        int n = s.size();
+        if(n&1) return 0;
+        stack<int>open, unlock;
+        for(int i = 0; i<n; i++){
+            if(locked[i] == '0') unlock.push(i);
+            else if(s[i] == '(') open.push(i);
+            else if(s[i] == ')'){
+                if(!open.empty()) open.pop();
+                else if(!unlock.empty()) unlock.pop();
+                else return 0;
             }
         }
-        while (!openBrackets.empty() && !unlocked.empty() &&
-               openBrackets.top() < unlocked.top()) {
-            openBrackets.pop();
-            unlocked.pop();
+        while(!open.empty() && !unlock.empty() && open.top() < unlock.top()){
+            open.pop();
+            unlock.pop();
         }
-
-        if (!openBrackets.empty()) {
-            return false;
-        }
-
-        return true;
+        if(!open.empty()) return 0;
+        return 1;
     }
 };
