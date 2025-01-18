@@ -1,8 +1,8 @@
 class Solution {
 public:
     // At max cost can be m+n
-    // create graph make a edge between all its vertices
-    // do bfs from 0,0 to n-1,m-1;
+    // create graph make a edge between all its vertices which are neighbour
+    // do bfs from 0,0 to n-1,m-1
     bool check(int nr, int nc, int n, int m){
         return (nr < n && nc < m && nr>=0 && nc>=0);
     }
@@ -40,8 +40,6 @@ public:
         while(!dq.empty()){
             int current = dq.front();
             dq.pop_front();
-            int cr = current/m;
-            int cc = current%m;
             for (auto& [neighbor, weight] : adj[current]) {
                 if (dist[current] + weight < dist[neighbor]) {
                     dist[neighbor] = dist[current] + weight;
