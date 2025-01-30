@@ -1,16 +1,13 @@
 class Solution {
 public:
     int findLongestChain(vector<vector<int>>& pairs) {
-        sort(pairs.begin(),pairs.end(), [](const vector<int>&a, const vector<int>&b){
-            return a[1]<b[1];
-        });
-        int cnt = 0, prev = INT_MIN;
-        for(auto &pair : pairs){
-            if(pair[0] > prev){
-                cnt++;
-                prev = pair[1];
-            }
+        vector<int>temp;
+        sort(pairs.begin(),pairs.end());
+        for(auto &num : pairs){
+            auto it = lower_bound(temp.begin(),temp.end(), num[0]);
+            if(it == temp.end()) temp.push_back(num[1]);
+            else *it = min(*it, num[1]);
         }
-        return cnt;
+        return temp.size();
     }
 };
