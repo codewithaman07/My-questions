@@ -1,41 +1,21 @@
 class Solution {
 public:
-    // Performs DFS and returns true if there's a path between src and target
-    // and false otherwise.
-    bool isPrerequisite(unordered_map<int, vector<int>>& adjList,
-                        vector<bool>& visited, int src, int target) {
-        visited[src] = 1;
-
-        if (src == target) {
-            return true;
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        unordered_map<int,unordered_set<int>>reachable;
+        for(auto & it : prerequisites){
+            reachable[it[1]].insert(it[0]);
         }
-
-        int answer = false;
-        for (auto adj : adjList[src]) {
-            if (!visited[adj]) {
-                answer =
-                    answer || isPrerequisite(adjList, visited, adj, target);
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if(reachable[j].count(i)){
+                    reachable[j].insert(reachable[i].begin(), reachable[i].end());
+                }
             }
         }
-        return answer;
-    }
-
-    vector<bool> checkIfPrerequisite(int numCourses,
-                                     vector<vector<int>>& prerequisites,
-                                     vector<vector<int>>& queries) {
-        unordered_map<int, vector<int>> adjList;
-        for (auto edge : prerequisites) {
-            adjList[edge[0]].push_back(edge[1]);
+        vector<bool>ans;
+        for(auto & query : queries){
+            ans.push_back(reachable[query[1]].count(query[0]));
         }
-
-        vector<bool> answer;
-        for (auto q : queries) {
-            // Reset the visited array for each query.
-            vector<bool> visited(numCourses, false);
-            answer.push_back(isPrerequisite(adjList, visited, q[0], q[1]));
-        }
-
-        return answer;
+        return ans;
     }
 };
-// editorial copy kiya h i will revisit 
