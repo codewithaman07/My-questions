@@ -1,17 +1,19 @@
 class Solution {
 public:
+    #define ll long long 
     long long countBadPairs(vector<int>& nums) {
-        long long ans = 0, n = nums.size();
-        map<long long , long long >mp;
+        ll ans = 0;
+        int n = nums.size();
+        vector<int>temp;
         for(int i = 0; i<n; i++){
-            mp[nums[i]-i]++;
+            temp.push_back(nums[i]-i);
         }
-        for(auto &it : mp){
-            long long cnt = it.second;
-            if(cnt > 1){
-                ans+=(cnt*(cnt-1)/2);
-            }
+        sort(temp.begin(),temp.end());
+        for(int i = 0; i<n; i++){
+            ll t = temp[i];
+            int idx = upper_bound(temp.begin(), temp.end(), t) - temp.begin();
+            ans+=(n-idx);
         }
-        return (n*(n-1)/2)-ans;
+        return ans;
     }
 };
