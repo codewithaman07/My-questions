@@ -9,7 +9,7 @@ public:
                 sum = nums[i];
             }
         }
-        return x>k;
+        return x<=k;
     }
     int splitArray(vector<int>& nums, int k) {
         int l = INT_MIN, r = 0, n = nums.size();
@@ -17,11 +17,12 @@ public:
             l = max(l, nums[i]);
             r+=nums[i];
         }
-        while(l<=r){
+        while(r-l>1){
             int m = l+(r-l)/2;
-            if(fun(m,k,nums)) l = m+1;
-            else r = m-1;
+            if(fun(m,k,nums)) r = m;
+            else l = m;
         }
-        return l;
+        if(fun(l,k,nums)) return l;
+        else return r;
     }
 };
