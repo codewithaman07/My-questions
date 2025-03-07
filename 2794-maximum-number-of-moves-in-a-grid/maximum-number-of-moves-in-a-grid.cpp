@@ -2,7 +2,6 @@ class Solution {
 public:
     int dfs(int i, int j, vector<vector<int>>&grid, vector<vector<int>>&dp){
         int n = grid.size(), m = grid[0].size();
-        if(j == m-1) return 0;
         if(i<0 || j>=m || i>=n) return 0;
         if(dp[i][j] != -1) return dp[i][j];
         int dr[3][2] = {{-1,1}, {0,1}, {1,1}};
