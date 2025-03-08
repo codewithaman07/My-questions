@@ -13,9 +13,7 @@ public:
         }
         for(int i = 0; i<n; i++){
             nums[i] = nums[i]+pre[i];
-        }
-        for(int num : nums){
-            if(num>0) return 0;
+            if(nums[i]>0) return 0;
         }
         return 1;
     }
