@@ -1,66 +1,45 @@
 class Solution {
-private:
+public:
+    #define ll long long 
     bool isVowel(char c) {
         return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
-
-public:
-    long countOfSubstrings(string word, int k) {
-        long numValidSubstrings = 0;
-        int start = 0;
-        int end = 0;
-        unordered_map<char, int> vowelCount;
-        int consonantCount = 0;
-
-        vector<int> nextConsonant(word.size());
-        int nextConsonantIndex = word.size();
-        for (int i = word.size() - 1; i >= 0; i--) {
-            nextConsonant[i] = nextConsonantIndex;
-            if (!isVowel(word[i])) {
-                nextConsonantIndex = i;
+    long long countOfSubstrings(string s, int k) {
+        int l = 0, n = s.size();
+        ll cnt = 0, temp = 0;
+        vector<int>cons(n);
+        int idx = n;
+        unordered_map<char,int>mp;
+        for(int i = n-1; i>=0; i--){
+            cons[i] = idx;
+            if(!isVowel(s[i])) idx = i;
+        }
+        for(int r = 0; r<n; r++){
+            char ch = s[r];
+            if(isVowel(ch)) mp[ch]++;
+            else temp++;
+            while(temp > k) {
+                char ch = s[l];
+                if(isVowel(ch)) {
+                    mp[ch]--;
+                    if(mp[ch] == 0)
+                        mp.erase(ch);
+                } else {
+                    temp--;
+                }
+                l++;
+            }
+            while(l<n && mp.size() == 5 && temp == k){
+                int idx = cons[r];
+                cnt+=(idx-r);
+                char ch = s[l];
+                if(!isVowel(ch)) temp--;
+                else{
+                    if(--mp[ch] == 0) mp.erase(ch);
+                }
+                l++;
             }
         }
-
-        while (end < word.size()) {
-            char newLetter = word[end];
-
-            if (isVowel(newLetter)) {
-                vowelCount[newLetter]++;
-            } else {
-                consonantCount++;
-            }
-
-            while (consonantCount > k) {
-                char startLetter = word[start];
-                if (isVowel(startLetter)) {
-                    vowelCount[startLetter]--;
-                    if (vowelCount[startLetter] == 0) {
-                        vowelCount.erase(startLetter);
-                    }
-                } else {
-                    consonantCount--;
-                }
-                start++;
-            }
-
-            while (start < word.size() && vowelCount.size() == 5 &&
-                   consonantCount == k) {
-                numValidSubstrings += nextConsonant[end] - end;
-                char startLetter = word[start];
-                if (isVowel(startLetter)) {
-                    vowelCount[startLetter]--;
-                    if (vowelCount[startLetter] == 0) {
-                        vowelCount.erase(startLetter);
-                    }
-                } else {
-                    consonantCount--;
-                }
-
-                start++;
-            }
-            end++;
-        }
-
-        return numValidSubstrings;
+        return cnt;
     }
-};// copy paste \U0001f62d\U0001f62d
+};
