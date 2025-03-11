@@ -1,15 +1,19 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        vector<int>v(3,-1);
-        int n = s.size(), ans = 0;
-        for(int i = 0; i<n; i++){
-            v[s[i]-'a'] = i;
-            if((v[0] != -1) && (v[1] != -1) && (v[2] != -1)){
-                int mini = min({v[0],v[1],v[2]});
-                ans = ans+mini+1;
+        int n = s.size(), l = 0, cnt = 0;
+        unordered_map<char,int>mp;
+        for(int r = 0; r<n; r++){
+            char ch = s[r];
+            mp[ch]++;
+            while(mp.size() == 3){
+                char c = s[l];
+                cnt+=(n-r);
+                cout<<cnt<<" ";
+                if(--mp[c] == 0) mp.erase(c);
+                l++;
             }
         }
-        return ans;
+        return cnt;
     }
 };
