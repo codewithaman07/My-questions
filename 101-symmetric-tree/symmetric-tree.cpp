@@ -12,8 +12,7 @@
 class Solution {
 public:
     bool solve(TreeNode* l, TreeNode* r){
-        if(!l && !r) return 1;
-        if(!l || !r) return 0;
+        if(!l || !r) return l == r;
         return ((l->val == r->val) && solve(l->left, r->right) && solve(l->right, r->left));
     }
     bool isSymmetric(TreeNode* root) {
