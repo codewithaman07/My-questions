@@ -9,10 +9,10 @@ public:
     }
     int findBestValue(vector<int>& arr, int target) {
         int n = arr.size(), l = 0, r = target, ans = 0;
-        while(l<r){
+        while(l<=r){
             int m = l+(r-l)/2;
             if(fun(m,arr,target)<=fun(m+1,arr,target)){
-                r = m;
+                r = m-1;
                 ans = m;
             }
             else l = m+1;
