@@ -32,6 +32,13 @@ public:
     int dc[4] = {0,-1,0,1};
     int largestIsland(vector<vector<int>>& grid) {
         int n = grid.size(), ans = 0;
+        int cnt = 0;
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                cnt+=grid[i][j];
+            }
+        }
+        if(cnt == n*n) return cnt;
         DSU ds(n*n);
         for(int i = 0; i<n; i++){
             for(int j = 0; j<n; j++){
@@ -63,9 +70,9 @@ public:
                 ans = max(ans,sum+1);
             }
         }
-        for(int i = 0; i<n*n; i++){
-            ans = max(ans, ds.size[ds.find(i)]);
-        }
+        // for(int i = 0; i<n*n; i++){
+        //     ans = max(ans, ds.size[ds.find(i)]);
+        // }
         return ans;
     }
 };
