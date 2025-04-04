@@ -1,99 +1,71 @@
-class Solution {
-private:
-    int exploreIsland(vector<vector<int>>& grid, int islandId, int currentRow,
-                      int currentColumn) {
-        if (currentRow < 0 || currentRow >= grid.size() || currentColumn < 0 ||
-            currentColumn >= grid[0].size() ||
-            grid[currentRow][currentColumn] != 1)
-            return 0;
-
-        grid[currentRow][currentColumn] = islandId;
-        return 1 +
-               exploreIsland(grid, islandId, currentRow + 1, currentColumn) +
-               exploreIsland(grid, islandId, currentRow - 1, currentColumn) +
-               exploreIsland(grid, islandId, currentRow, currentColumn + 1) +
-               exploreIsland(grid, islandId, currentRow, currentColumn - 1);
+class DSU{
+    public:
+    vector<int>parent,size;
+    DSU(int n){
+        parent.resize(n+1);
+        size.resize(n+1,1);
+        for(int i = 0; i<n; i++) parent[i] = i;
     }
-
-public:
-    int largestIsland(vector<vector<int>>& grid) {
-        unordered_map<int, int> islandSizes;
-        int islandId = 2;
-
-        // Step 1: Mark all islands and calculate their sizes
-        for (int currentRow = 0; currentRow < grid.size(); ++currentRow) {
-            for (int currentColumn = 0; currentColumn < grid[0].size();
-                 ++currentColumn) {
-                if (grid[currentRow][currentColumn] == 1) {
-                    islandSizes[islandId] = exploreIsland(
-                        grid, islandId, currentRow, currentColumn);
-                    ++islandId;
-                }
-            }
+    int find(int u){
+        if(parent[u] == u) return u;
+        return parent[u] = find(parent[u]);
+    }
+    void unions(int u, int v){
+        int pu = find(u), pv = find(v);
+        if(pu == pv) return;
+        if(size[pu]<size[pv]){
+            parent[pu] = pv;
+            size[pv]+=size[pu];
         }
-
-        // If there are no islands, return 1
-        if (islandSizes.empty()) {
-            return 1;
+        else{
+            parent[pv] = pu;
+            size[pu]+=size[pv];
         }
-        // If the entire grid is one island, return its size or size + 1
-        if (islandSizes.size() == 1) {
-            --islandId;
-            return (islandSizes[islandId] == grid.size() * grid[0].size())
-                       ? islandSizes[islandId]
-                       : islandSizes[islandId] + 1;
-        }
-
-        int maxIslandSize = 1;
-
-        // Step 2: Try converting every 0 to 1 and calculate the resulting
-        // island size
-        for (int currentRow = 0; currentRow < grid.size(); ++currentRow) {
-            for (int currentColumn = 0; currentColumn < grid[0].size();
-                 ++currentColumn) {
-                if (grid[currentRow][currentColumn] == 0) {
-                    int currentIslandSize = 1;
-                    unordered_set<int> neighboringIslands;
-
-                    // Check down
-                    if (currentRow + 1 < grid.size() &&
-                        grid[currentRow + 1][currentColumn] > 1) {
-                        neighboringIslands.insert(
-                            grid[currentRow + 1][currentColumn]);
-                    }
-
-                    // Check up
-                    if (currentRow - 1 >= 0 &&
-                        grid[currentRow - 1][currentColumn] > 1) {
-                        neighboringIslands.insert(
-                            grid[currentRow - 1][currentColumn]);
-                    }
-
-                    // Check right
-                    if (currentColumn + 1 < grid[0].size() &&
-                        grid[currentRow][currentColumn + 1] > 1) {
-                        neighboringIslands.insert(
-                            grid[currentRow][currentColumn + 1]);
-                    }
-
-                    // Check left
-                    if (currentColumn - 1 >= 0 &&
-                        grid[currentRow][currentColumn - 1] > 1) {
-                        neighboringIslands.insert(
-                            grid[currentRow][currentColumn - 1]);
-                    }
-
-                    // Sum the sizes of all unique neighboring islands
-                    for (int id : neighboringIslands) {
-                        currentIslandSize += islandSizes[id];
-                    }
-
-                    maxIslandSize = max(maxIslandSize, currentIslandSize);
-                }
-            }
-        }
-
-        return maxIslandSize;
     }
 };
-// editorial copy :(
+class Solution {
+public:
+    bool valid(int nr, int nc, int n){
+        return (nr>=0 && nr<n && nc>=0 && nc<n);
+    }
+    int dr[4] = {-1,0,1,0};
+    int dc[4] = {0,-1,0,1};
+    int largestIsland(vector<vector<int>>& grid) {
+        int n = grid.size(), ans = 0;
+        DSU ds(n*n);
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if(!grid[i][j]) continue;
+                for(int k = 0; k<4; k++){
+                    int nr = i+dr[k];
+                    int nc = j+dc[k];
+                    if(valid(nr,nc,n) && grid[nr][nc]){
+                        int x = i*n+j;
+                        int y = nr*n+nc;
+                        ds.unions(x,y);
+                    }
+                }
+            }
+        }
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j]) continue;
+                set<int>st;
+                for(int k = 0; k<4; k++){
+                    int nr = i+dr[k];
+                    int nc = j+dc[k];
+                    if(valid(nr,nc,n) && grid[nr][nc]){
+                        st.insert(ds.find(nr*n+nc));
+                    }
+                }
+                int sum = 0;
+                for(auto num : st) sum+=ds.size[num];
+                ans = max(ans,sum+1);
+            }
+        }
+        for(int i = 0; i<n*n; i++){
+            ans = max(ans, ds.size[ds.find(i)]);
+        }
+        return ans;
+    }
+};
