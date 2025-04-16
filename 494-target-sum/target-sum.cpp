@@ -1,28 +1,22 @@
 class Solution {
 public:
-    int solve(vector<int>&arr, int target){
-        int n = arr.size();
-        vector<vector<int>>dp(n, vector<int>(target+1, 0));
-        if(arr[0] == 0) dp[0][0] = 2;
-        else dp[0][0] = 1;
-        if(arr[0] != 0 && arr[0]<=target) dp[0][arr[0]] = 1;
-        for(int i = 1; i<n; i++){
-            for(int j = 0; j<=target; j++){
-                int np = dp[i-1][j];
-                int p = 0;
-                if(arr[i]<=j){
-                    p = dp[i-1][j-arr[i]];
-                }
-                dp[i][j] = p+np;
-            }
-        }
-        return dp[n-1][target];
-    }
-    int findTargetSumWays(vector<int>& nums, int target) {
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        if(sum-target < 0 || (sum-target)%2 != 0){
+    int solve(int i, vector<int>&nums, int target, vector<vector<int>>&dp){
+        int n = nums.size();
+        if(i == 0) {
+            if(target == 0 && nums[0] == 0) return 2;  // Both +0 and -0 count.
+            if(target == 0 || target == nums[0]) return 1;
             return 0;
         }
-        return solve(nums, (sum-target)/2);
+        if(dp[i][target] != -1) return dp[i][target];
+        int p = target-nums[i]>=0 ? solve(i-1, nums, target-nums[i], dp) : 0;
+        int np = solve(i-1, nums, target, dp);
+        return dp[i][target] = p+np;
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n = nums.size();
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if(sum < abs(target) || (sum + target) % 2 != 0) return 0;
+        vector<vector<int>>dp(n+1, vector<int>(sum+target+1,-1));
+        return solve(n-1, nums, (sum+target)/2, dp);
     }
 };
