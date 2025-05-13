@@ -1,24 +1,23 @@
 class Solution {
 public:
+    const int M = 1e9+7;
     int lengthAfterTransformations(string s, int t) {
-        int mod = 1e9+7;
-        vector<int>cnt(26,0);
-        for(char &ch : s) cnt[ch-'a']++;
-        for(int j = 0; j<t; j++){
+        int n = s.size();
+        vector<int>freq(26,0);
+        for(char &ch : s) freq[ch-'a']++;
+        for(int i = 0; i<t; i++){
             vector<int>temp(26,0);
-            for(int i = 0; i<26; i++){
-                if(i == 25){
-                    temp[0] = (temp[0]+cnt[i])%mod;
-                    temp[1] = (temp[1]+cnt[i])%mod;
+            for(int j = 0; j<26; j++){
+                if(j == 25){
+                    temp[0] = (temp[0]+freq[j])%M;
+                    temp[1] = (temp[1]+freq[j])%M;
                 }
-                else temp[i+1] = (temp[i+1]+cnt[i])%mod;
+                else temp[j+1] = (temp[j+1]+freq[j])%M;
             }
-            cnt = temp;
+            freq = temp;
         }
         int ans = 0;
-        for(auto i : cnt){
-            ans = (ans+i)%mod;
-        }
+        for(int i : freq) ans = (ans+i)%M;
         return ans;
     }
 };
