@@ -1,41 +1,31 @@
 class Solution {
 public:
-    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys,
-                   vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
-        
-        int n = status.size();
-        vector<bool> used(n, false);        
-        vector<bool> hasBox(n, false);      
-        vector<bool> hasKey(n, false);      
-        
-        queue<int> q;
-        
-        for (int box : initialBoxes) {
-            hasBox[box] = true;
-            q.push(box);
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
+        int n = status.size(), ans = 0;
+        vector<int>used(n,0);
+        vector<int>k(n,0);
+        vector<int>boxes(n,0);
+        queue<int>q;
+        for(int i : initialBoxes){
+            q.push(i);
+            boxes[i] = 1;
         }
-        int totalCandies = 0;
-        while (!q.empty()) {
+        while(!q.empty()){
             int box = q.front();
             q.pop();
-            
-            if (!status[box] && !hasKey[box]) continue; 
-            if (used[box]) continue;                    
-            used[box] = true;
-            totalCandies += candies[box];
-            for (int key : keys[box]) {
-                hasKey[key] = true;
-                if (hasBox[key] && !used[key]) {
-                    q.push(key);
-                }
+            if(used[box]) continue;
+            if(!k[box] && !status[box]) continue;
+            used[box] = 1;
+            ans+=candies[box];
+            for(int x : keys[box]){
+                k[x] = 1;
+                if(!used[x] && boxes[x]) q.push(x); 
             }
-            for (int newBox : containedBoxes[box]) {
-                hasBox[newBox] = true;
-                if (!used[newBox]) {
-                    q.push(newBox);
-                }
+            for(int x : containedBoxes[box]){
+                boxes[x] = 1;
+                if((k[x] || status[x]) && !used[x]) q.push(x);
             }
-        }  
-        return totalCandies;
+        }
+        return ans;
     }
 };
