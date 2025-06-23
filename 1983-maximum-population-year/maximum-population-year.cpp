@@ -1,20 +1,19 @@
 class Solution {
 public:
     int maximumPopulation(vector<vector<int>>& logs) {
-        // Use a map to handle arbitrary year ranges
-        map<int,int> delta;
-        for (auto& p : logs) {
-            delta[p[0]] += 1;   // +1 at birth year
-            delta[p[1]] -= 1;   // -1 at death year (exclusive)
+        map<int,int>mp;
+        int n = logs.size(), ans = INT_MAX, cnt = 0, maxi = 0;
+        for(int i = 0; i<n; i++){
+            mp[logs[i][0]]++;
+            mp[logs[i][1]]--;
         }
-        int curr = 0, maxPop = 0, ansYear = INT_MAX;
-        for (auto& [year, change] : delta) {
-            curr += change;
-            if (curr > maxPop) {
-                maxPop = curr;
-                ansYear = year;
+        for(auto &[x,y] : mp){
+            cnt+=y;
+            if(cnt>maxi){
+                maxi = cnt;
+                ans = x;
             }
         }
-        return ansYear;
+        return ans;
     }
 };
