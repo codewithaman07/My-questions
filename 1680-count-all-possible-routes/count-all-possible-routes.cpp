@@ -3,7 +3,6 @@ public:
     #define ll long long
     const int mod = 1e9+7;
     int solve(int n, int i, int e, int f, vector<int>&arr, vector<vector<int>>&dp){
-        if(f<0) return 0;
         if(dp[i][f] != -1) return dp[i][f];
         ll ans = i == e ? 1 : 0;
         for(int j = 0;j<n; j++){
