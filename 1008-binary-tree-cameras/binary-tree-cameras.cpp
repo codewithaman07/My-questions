@@ -11,23 +11,41 @@
  */
 class Solution {
 public:
-    void solve(unordered_set<TreeNode*>&st, TreeNode* root, int &ans, TreeNode* parent){
+    void calculateCameras(TreeNode* root, int &numCameras, unordered_set<TreeNode*>&nodes, TreeNode* parent){
         if(!root) return;
-        solve(st, root->left, ans, root);
-        solve(st, root->right, ans, root);
-        if((parent == nullptr && !st.count(root)) || !st.count(root->left) || !st.count(root->right)){
-            ans++;
-            st.insert(parent);
-            st.insert(root);
-            st.insert(root->left);
-            st.insert(root->right);
+        calculateCameras(root->left, numCameras, nodes, root);
+        calculateCameras(root->right, numCameras, nodes, root);
+        if((parent == nullptr && !nodes.count(root)) || (!nodes.count(root->left) || (!nodes.count(root->right)))){
+            numCameras++;
+            nodes.insert(root);
+            nodes.insert(root->left);
+            nodes.insert(root->right);
+            nodes.insert(parent);
         }
     }
     int minCameraCover(TreeNode* root) {
-        int ans  = 0;
-        unordered_set<TreeNode*>st;
-        st.insert(nullptr);
-        solve(st, root, ans, nullptr);
-        return ans;
+        int numCameras = 0;
+        unordered_set<TreeNode*>nodes;
+        nodes.insert(nullptr);
+        calculateCameras(root, numCameras, nodes, nullptr);
+        return numCameras;
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
