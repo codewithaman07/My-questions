@@ -11,11 +11,8 @@ public:
             }
             if(cnt>=3) temp = max(temp, num[i]), f = 1;
         }
-        string ans;
-        if(!f) return ans;
-        ans+=temp;
-        ans+=temp;
-        ans+=temp;
+        if(!f) return "";
+        string ans = string(3,temp);
         return ans;
     }
 };
