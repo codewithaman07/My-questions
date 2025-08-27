@@ -1,19 +1,21 @@
 class Solution {
 public:
+    int solve(int i, int j, vector<int>&arr, vector<vector<int>>&dp){
+        if(i>j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        int maxi = INT_MIN;
+        for(int k = i; k<=j; k++){
+            int coins = arr[i-1]*arr[k]*arr[j+1];
+            int rem = solve(i,k-1,arr,dp)+solve(k+1,j,arr,dp);
+            maxi = max(maxi, coins+rem);
+        }
+        return dp[i][j] = maxi;
+    }
     int maxCoins(vector<int>& nums) {
+        int n = nums.size();
         nums.insert(nums.begin(), 1);
         nums.push_back(1);
-        int n = nums.size();
-        vector<vector<int>>dp(n, vector<int>(n,0));
-        for(int l = n-2; l>=1; l--){
-            for(int r = l; r<=n-2; r++){
-                for(int i = l; i<=r; i++){
-                    int gain = nums[l-1]*nums[i]*nums[r+1];
-                    int rem = dp[l][i-1]+dp[i+1][r];
-                    dp[l][r] = max(gain+rem, dp[l][r]);
-                }
-            }
-        }
-        return dp[1][n-2];
+        vector<vector<int>>dp(n+2, vector<int>(n+2, -1));
+        return solve(1, n, nums, dp);
     }
 };
