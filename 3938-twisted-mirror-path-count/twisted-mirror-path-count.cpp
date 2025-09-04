@@ -10,8 +10,8 @@ public:
             if(dir == 1) return dp[i][j][dir] = solve(i-1,j,grid,dp,0)%mod;
             else return dp[i][j][dir] = solve(i,j-1,grid,dp,1)%mod;
         }
-        ll left = solve(i-1,j,grid,dp,0)%mod;
-        ll up = solve(i,j-1,grid,dp,1)%mod;
+        ll up = solve(i-1,j,grid,dp,0)%mod;
+        ll left = solve(i,j-1,grid,dp,1)%mod;
         return dp[i][j][dir] = (left+up)%mod;
     }
     int uniquePaths(vector<vector<int>>& grid) {
