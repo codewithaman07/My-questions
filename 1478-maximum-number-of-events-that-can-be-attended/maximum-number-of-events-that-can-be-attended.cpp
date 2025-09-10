@@ -1,23 +1,22 @@
 class Solution {
 public:
     int maxEvents(vector<vector<int>>& events) {
-        sort(events.begin(),events.end());
-        int l = INT_MAX, r = INT_MIN, ans = 0;
+        int l = INT_MAX, r = INT_MIN, n = events.size(), ans = 0, j = 0;
         for(auto e : events){
-            l = min(l, e[0]);
-            r = max(r,e[1]);
+            l = min(e[0], l);
+            r = max(e[1], r);
         }
-        priority_queue<int,vector<int>, greater<int>>pq;
-        int j = 0, n = events.size();
+        sort(events.begin(), events.end());
+        multiset<int>st;
         for(int i = l; i<=r; i++){
-            while(j<n && events[j][0] == i){
-                pq.push(events[j][1]);
+            while(j<n && events[j][0] <= i){
+                st.insert(events[j][1]);
                 j++;
             }
-            while(!pq.empty() && pq.top()<i) pq.pop();
-            if(!pq.empty()){
+            while(!st.empty() && *st.begin() < i) st.erase(st.begin());
+            if(!st.empty() && *st.begin() >= i){
                 ans++;
-                pq.pop();
+                st.erase(st.begin());
             }
         }
         return ans;
