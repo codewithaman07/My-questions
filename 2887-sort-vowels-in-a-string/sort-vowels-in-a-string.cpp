@@ -1,17 +1,24 @@
 class Solution {
 public:
+    bool isVowel(char &ch){
+        if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') return true;
+        return false;
+    }
     string sortVowels(string s) {
-        vector<char>temp = {'a','e','i', 'o','u', 'A', 'E', 'I', 'O', 'U'};
-        set<char>st(temp.begin(), temp.end());
-        vector<int>vowels;
-        for(char ch : s){
-            if(st.count(ch)) vowels.push_back(ch);
+        unordered_map<char,int>mp;
+        string sorted = "AEIOUaeiou", ans;
+        for(char &ch : s){
+            if(isVowel(ch)) mp[ch]++;
         }
-        sort(vowels.begin(), vowels.end());
         int pos = 0;
         for(char &ch : s){
-            if(st.count(ch)) ch = vowels[pos++];
+            if(isVowel(ch)){
+                while(mp[sorted[pos]] == 0) pos++;
+                ans+=sorted[pos];
+                mp[sorted[pos]]--;
+            }
+            else ans+=ch;
         }
-        return s;
+        return ans;
     }
 };
