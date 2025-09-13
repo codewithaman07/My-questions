@@ -5,7 +5,7 @@ public:
         return false;
     }
     int maxFreqSum(string s) {
-        map<int,int>vowels, consonants;
+        unordered_map<int,int>vowels, consonants;
         for(char &ch : s){
             if(isVowel(ch)) vowels[ch]++;
             else consonants[ch]++;
