@@ -1,26 +1,28 @@
 class Solution {
 public:
     #define ll long long
-    long long minCost(vector<int>& arr, vector<int>& brr) {
-        unordered_map<int,int>mp;
-        int n = arr.size();
+    long long minCost(vector<int>& basket1, vector<int>& basket2) {
+        map<ll,ll>mp;
+        ll mini = LLONG_MAX, ans = 0;
+        for(ll num : basket1){
+            mini = min(mini, num);
+            mp[num]++;
+        }
+        for(ll num : basket2){
+            mini = min(mini, num);
+            mp[num]--;
+        }
         vector<int>nums;
-        int mini = INT_MAX;
-        for(int i = 0; i<n; i++) mini = min(mini, arr[i]);
-        for(int i = 0; i<n; i++) mini = min(mini, brr[i]);
-        for(int num : arr) mp[num]++;
-        for(int num : brr) mp[num]--;
-        for(auto &[x,y] : mp){
-            y = abs(y);
-            if(y&1) return -1;
-            for(int i = 0; i<y/2; i++){
-                nums.push_back(x);
+        for(auto &[num, freq] : mp){
+            freq = abs(freq);
+            if(freq%2 == 1) return -1;
+            else{
+                for(int i = 0; i<freq/2; i++) nums.push_back(num);
             }
         }
-        sort(nums.begin(),nums.end());
-        ll ans = 0;
         for(int i = 0; i<nums.size()/2; i++){
-            ans+= min(nums[i], 2*mini);
+            ans = ans + min(1ll*nums[i], 2*mini);
+            cout<<nums[i]<<" ";
         }
         return ans;
     }
