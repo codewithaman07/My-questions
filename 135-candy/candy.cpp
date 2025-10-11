@@ -9,7 +9,6 @@ public:
         for(int i = n-1; i>0; i--){
             if(nums[i]<nums[i-1]) ans[i-1] = max(1+ans[i], ans[i-1]);
         }
-        // for(int i : ans) cout<<i<<" ";
         return accumulate(ans.begin(), ans.end(),0);
     }
 };
